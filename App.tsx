@@ -3,17 +3,19 @@ import { Sutra, AppState } from './types';
 import { SUTRAS } from './constants';
 import SutraCard from './components/SutraCard';
 import PuzzleArena from './components/PuzzleArena';
+import TutorialArena from './components/TutorialArena';
 
 const App: React.FC = () => {
   const [state, setState] = useState<AppState>({
     view: 'MENU',
+    mode: 'PRACTICE', // Default mode
     selectedSutra: null,
     score: 0,
     streak: 0,
   });
 
   const handleSutraSelect = (sutra: Sutra) => {
-    setState(prev => ({ ...prev, view: 'PUZZLE', selectedSutra: sutra }));
+    setState(prev => ({ ...prev, view: 'ACTIVE', selectedSutra: sutra }));
   };
 
   const handleBackToMenu = () => {
@@ -34,6 +36,15 @@ const App: React.FC = () => {
       streak: 0
     }));
   };
+  
+  const handleStartPractice = () => {
+     // Switch from Tutorial view directly to Puzzle view for the same sutra
+     setState(prev => ({ ...prev, mode: 'PRACTICE' }));
+  };
+
+  const setMode = (mode: 'PRACTICE' | 'TUTORIAL') => {
+    setState(prev => ({ ...prev, mode }));
+  };
 
   return (
     <div className="min-h-screen font-sans text-gray-800 relative pb-12">
@@ -49,7 +60,7 @@ const App: React.FC = () => {
             <div className="w-10 h-10 bg-vedic-deep rounded-lg flex items-center justify-center text-vedic-gold font-serif font-bold text-xl shadow-md">
               V
             </div>
-            <h1 className="font-serif text-xl md:text-2xl font-bold text-vedic-deep">
+            <h1 className="font-serif text-xl md:text-2xl font-bold text-vedic-deep hidden sm:block">
               Vedic Wisdom
             </h1>
           </div>
@@ -72,33 +83,65 @@ const App: React.FC = () => {
       <main className="relative z-10 max-w-5xl mx-auto px-4 py-12">
         {state.view === 'MENU' ? (
           <div className="animate-fade-in">
-            <div className="text-center mb-12">
+            <div className="text-center mb-8">
               <h2 className="font-serif text-4xl md:text-5xl font-bold text-gray-900 mb-4">
                 Master the Sutras
               </h2>
-              <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-                Select a Vedic technique to begin your training. Learn to calculate with the speed of thought.
+              <p className="text-lg text-gray-600 max-w-2xl mx-auto mb-8">
+                {state.mode === 'PRACTICE' 
+                  ? "Select a technique below to generate a new puzzle and test your skills."
+                  : "Choose a technique to see a step-by-step interactive tutorial."}
               </p>
+
+              {/* Mode Toggle */}
+              <div className="inline-flex bg-stone-200 p-1 rounded-full relative mb-8 shadow-inner">
+                <button 
+                  onClick={() => setMode('PRACTICE')}
+                  className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 z-10 ${state.mode === 'PRACTICE' ? 'bg-white text-vedic-deep shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  Practice Puzzles
+                </button>
+                <button 
+                   onClick={() => setMode('TUTORIAL')}
+                   className={`px-6 py-2 rounded-full text-sm font-bold transition-all duration-300 z-10 ${state.mode === 'TUTORIAL' ? 'bg-white text-vedic-deep shadow-sm' : 'text-gray-500 hover:text-gray-700'}`}
+                >
+                  Learn Tutorials
+                </button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               {SUTRAS.map((sutra) => (
-                <SutraCard 
-                  key={sutra.id} 
-                  sutra={sutra} 
-                  onClick={handleSutraSelect} 
-                />
+                <div key={sutra.id} className="relative group">
+                   {state.mode === 'TUTORIAL' && (
+                     <div className="absolute -top-2 -right-2 z-20 bg-vedic-teal text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-lg opacity-0 group-hover:opacity-100 transition-opacity">
+                        LEARN
+                     </div>
+                   )}
+                   <SutraCard 
+                    sutra={sutra} 
+                    onClick={handleSutraSelect} 
+                  />
+                </div>
               ))}
             </div>
           </div>
         ) : (
           state.selectedSutra && (
-            <PuzzleArena 
-              sutra={state.selectedSutra} 
-              onBack={handleBackToMenu}
-              onSolve={handleSolve}
-              onFail={handleFail}
-            />
+            state.mode === 'PRACTICE' ? (
+              <PuzzleArena 
+                sutra={state.selectedSutra} 
+                onBack={handleBackToMenu}
+                onSolve={handleSolve}
+                onFail={handleFail}
+              />
+            ) : (
+              <TutorialArena 
+                sutra={state.selectedSutra}
+                onBack={handleBackToMenu}
+                onStartPractice={handleStartPractice}
+              />
+            )
           )
         )}
       </main>

@@ -16,8 +16,17 @@ export interface PuzzleData {
   hint: string;
 }
 
+export interface TutorialData {
+  title: string;
+  concept: string;
+  exampleProblem: string;
+  steps: string[];
+  whyItWorks: string;
+}
+
 export interface AppState {
-  view: 'MENU' | 'PUZZLE';
+  view: 'MENU' | 'ACTIVE';
+  mode: 'PRACTICE' | 'TUTORIAL';
   selectedSutra: Sutra | null;
   score: number;
   streak: number;

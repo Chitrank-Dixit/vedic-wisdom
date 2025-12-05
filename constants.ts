@@ -18,6 +18,22 @@ export const SUTRAS: Sutra[] = [
     colorClass: 'bg-indigo-900',
   },
   {
+    id: 'multiply11',
+    sanskritName: 'Antyayor Eva (x11)',
+    englishTranslation: 'Only the last two',
+    description: 'The magic method for multiplying any number by 11 instantly by adding neighbors.',
+    difficulty: 'Beginner',
+    colorClass: 'bg-pink-900',
+  },
+  {
+    id: 'yavadunam',
+    sanskritName: 'Yavadunam',
+    englishTranslation: 'Whatever the deficiency',
+    description: 'The fastest way to square numbers near a base like 100 or 1000 (e.g., 93², 104²).',
+    difficulty: 'Intermediate',
+    colorClass: 'bg-purple-900',
+  },
+  {
     id: 'urdhva',
     sanskritName: 'Urdhva Tiryagbhyam',
     englishTranslation: 'Vertically and Crosswise',
@@ -32,5 +48,13 @@ export const SUTRAS: Sutra[] = [
     description: 'Multiplication shortcut when last digits sum to 10 and previous parts are identical (e.g., 43 × 47).',
     difficulty: 'Intermediate',
     colorClass: 'bg-rose-900',
+  },
+  {
+    id: 'vilokanam',
+    sanskritName: 'Vilokanam',
+    englishTranslation: 'By mere observation',
+    description: 'Find Cube Roots of perfect cubes (up to 6 digits) just by looking at the number.',
+    difficulty: 'Advanced',
+    colorClass: 'bg-blue-900',
   }
 ];
