@@ -18,6 +18,12 @@ export const generateSutraPuzzle = async (sutra: Sutra): Promise<PuzzleData> => 
     case 'multiply11':
       promptContext = "Generate a problem multiplying a random 2-digit or small 3-digit number by 11 (e.g., 43 * 11). Focus on the 'add neighbors' sandwich technique.";
       break;
+    case 'ekanyunena':
+      promptContext = "Generate a multiplication problem where one multiplier consists entirely of 9s (e.g., 46 * 99 or 7 * 9). The answer should be calculated using the 'Reduce by one' method.";
+      break;
+    case 'gunita':
+      promptContext = "Generate a multiplication problem (e.g. 23 * 12) and ask for the Digital Root (sum of digits until single digit) of the product. The answer must be the single digit digital root.";
+      break;
     case 'yavadunam':
       promptContext = "Generate a problem squaring a number close to 100 (e.g. 96^2 or 104^2) using the 'deficiency/surplus' method.";
       break;
@@ -27,8 +33,20 @@ export const generateSutraPuzzle = async (sutra: Sutra): Promise<PuzzleData> => 
     case 'antyayor':
       promptContext = "Generate a multiplication problem where the last digits sum to 10 and the initial digits are the same (e.g., 64 * 66).";
       break;
+    case 'paravartya':
+      promptContext = "Generate a division problem where the divisor is slightly above 10 or 100 (e.g. 1234 / 112 or 145 / 12) and ask for the Quotient. Or a simple algebraic equation x + 3 = 7.";
+      break;
+    case 'sankalana':
+      promptContext = "Generate a system of two linear equations where coefficients are swapped (e.g. 3x + 2y = 12, 2x + 3y = 13). Ask for the value of (x + y).";
+      break;
     case 'vilokanam':
       promptContext = "Generate a problem finding the Cube Root of a perfect cube between 4000 and 150000 (e.g., Cube Root of 12167). The answer must be an integer.";
+      break;
+    case 'anurupyena':
+      promptContext = "Generate a problem asking to cube a 2-digit number (e.g. 12^3 or 21^3) using the ratio method.";
+      break;
+    case 'shunyam':
+      promptContext = "Generate a problem asking for 'x' in an equation where the numerators are equal and denominators differ but sum to same value (e.g. 1/(x+2) + 1/(x+3) = 0). The answer is usually calculated by setting sum to zero.";
       break;
     default:
       promptContext = "Generate a simple Vedic math problem.";
