@@ -48,6 +48,48 @@ export const generateSutraPuzzle = async (sutra: Sutra): Promise<PuzzleData> => 
     case 'shunyam':
       promptContext = "Generate a problem asking for 'x' in an equation where the numerators are equal and denominators differ but sum to same value (e.g. 1/(x+2) + 1/(x+3) = 0). The answer is usually calculated by setting sum to zero.";
       break;
+    case 'anurupye_shunyam':
+      promptContext = "Generate a system of two simultaneous linear equations (e.g. 3x + 4y = 8 and 6x + 8y = k). One variable term should be a multiple of the other in the second equation, leading to a zero solution for one variable. Or a ratio based problem.";
+      break;
+    case 'purana':
+      promptContext = "Generate a problem that uses 'completion' like difference of squares (e.g. 29 * 31 = 30^2 - 1) or finding a root by completing the square.";
+      break;
+    case 'calana':
+      promptContext = "Generate a problem to find the roots of a simple quadratic equation (e.g. x^2 - 5x + 6 = 0) using the Calana-Kalanabhyam method which relates to differential calculus or discriminant.";
+      break;
+    case 'vyasti':
+      promptContext = "Generate a word problem asking for the average (mean) of a set of numbers that are close to each other (e.g. 48, 52, 53, 49) using a working base.";
+      break;
+    case 'sesanyankena':
+      promptContext = "Generate a problem asking for the first 3-4 decimal digits of a fraction like 1/19 or 1/7 using the remainders method.";
+      break;
+    case 'sopantyadvayamantyam':
+      promptContext = "Generate an algebraic equation problem of the form 1/(x+a) + 1/(x+b) = 1/(x+c) + 1/(x+d) where a+b = c+d. The answer for x is usually -(a+b)/2.";
+      break;
+    case 'gunakasamuccayah':
+      promptContext = "Generate a problem asking to verify the factorization of a quadratic (e.g. does (x+2)(x+3) = x^2+5x+6?) by comparing the Sum of Coefficients (Sc). The answer should be the numeric Sum of Coefficients.";
+      break;
+    
+    // Newly Added Upsutras
+    case 'sisyate':
+      promptContext = "Generate a problem checking if a large number (e.g. 4563) is divisible by 9 or 3 using the digit sum remainder method. Ask for the Remainder.";
+      break;
+    case 'adyam':
+      promptContext = "Generate a factorization problem for a simple quadratic like 2x^2 + 7x + 5. Ask for one of the factors or the 'First' term of the factors using Adyam (First by first) principle.";
+      break;
+    case 'kevalaih':
+      promptContext = "Generate a problem involving the cyclic number 142857 (e.g. 142857 * 3) or division of a small number by 7 (e.g. 3/7) to find the repeating decimal sequence.";
+      break;
+    case 'vestanam':
+      promptContext = "Generate a divisibility check problem (e.g. Is 91 divisible by 7? or Is 247 divisible by 13?) using the 'Osculation' (Vestanam) technique.";
+      break;
+    case 'lopana':
+      promptContext = "Generate a classic simultaneous equation problem (e.g. 2x + 3y = 8, 3x - y = 1) to solve for x or y using the elimination (Lopana) method.";
+      break;
+    case 'samuccaya':
+      promptContext = "Generate a problem to verify a multiplication like (x+3)(x+4) = x^2+7x+12 using 'Samuccaya Gunitah'. Ask for the Product of the Sums of the coefficients of the factors.";
+      break;
+      
     default:
       promptContext = "Generate a simple Vedic math problem.";
   }
@@ -158,16 +200,13 @@ export const generateSutraTutorial = async (sutra: Sutra): Promise<TutorialData>
   } catch (error) {
     console.error("Error generating tutorial:", error);
     return {
-      title: "Learning Ekadhikena Purvena",
-      concept: "Used for squaring numbers ending in 5.",
-      exampleProblem: "35²",
+      title: "Learning Vedic Math",
+      concept: "Technique unavailable",
+      exampleProblem: "N/A",
       steps: [
-        "Identify the first part: 3.",
-        "Multiply 3 by the next integer (4). 3 x 4 = 12.",
-        "Square the last digit: 5 x 5 = 25.",
-        "Result: 1225."
+        "Please try again later.",
       ],
-      whyItWorks: "It relies on the algebraic identity (10x + 5)^2 = 100x(x+1) + 25."
+      whyItWorks: "AI connection failed."
     };
   }
 };
