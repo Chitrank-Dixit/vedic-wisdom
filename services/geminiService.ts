@@ -1,5 +1,5 @@
 import { GoogleGenAI, Type } from "@google/genai";
-import { PuzzleData, Sutra, TutorialData } from '../types';
+import { PuzzleData, Sutra, TutorialData, SutraDetail } from '../types';
 
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
 
@@ -170,4 +170,49 @@ export const generateSutraTutorial = async (sutra: Sutra): Promise<TutorialData>
       whyItWorks: "It relies on the algebraic identity (10x + 5)^2 = 100x(x+1) + 25."
     };
   }
-}
+};
+
+export const generateSutraDetails = async (sutra: Sutra): Promise<SutraDetail> => {
+  const prompt = `
+    Provide a detailed explanation of the Vedic Math Sutra: "${sutra.sanskritName}" (${sutra.englishTranslation}).
+    
+    Return a JSON object with:
+    1. summary: A 2-sentence rich description of what it does.
+    2. useCases: An array of 3 specific strings describing when to use it (e.g., "Multiplying numbers close to 100", "Squaring numbers ending in 5").
+    3. mathDeepDive: A concise paragraph explaining the mathematical/algebraic logic behind why it works.
+  `;
+
+  try {
+    const response = await ai.models.generateContent({
+      model: modelId,
+      contents: prompt,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            summary: { type: Type.STRING },
+            useCases: {
+              type: Type.ARRAY,
+              items: { type: Type.STRING }
+            },
+            mathDeepDive: { type: Type.STRING }
+          },
+          required: ["summary", "useCases", "mathDeepDive"]
+        }
+      }
+    });
+    
+    const text = response.text;
+    if (!text) throw new Error("No detail generated");
+    return JSON.parse(text) as SutraDetail;
+
+  } catch (e) {
+    console.error("Error details:", e);
+    return {
+      summary: sutra.description,
+      useCases: ["General arithmetic", "Mental calculations"],
+      mathDeepDive: "This sutra simplifies calculations by recognizing patterns in numbers."
+    };
+  }
+};

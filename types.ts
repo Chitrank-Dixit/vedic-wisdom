@@ -24,6 +24,12 @@ export interface TutorialData {
   whyItWorks: string;
 }
 
+export interface SutraDetail {
+  summary: string;
+  useCases: string[];
+  mathDeepDive: string;
+}
+
 export interface AppState {
   view: 'MENU' | 'ACTIVE';
   mode: 'PRACTICE' | 'TUTORIAL';
