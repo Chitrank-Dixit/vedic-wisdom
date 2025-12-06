@@ -57,6 +57,12 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
     onFail();
   };
 
+  const handleReset = () => {
+    setUserAnswer('');
+    setStatus('IDLE');
+    setShowHint(false);
+  };
+
   if (loading) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[50vh] space-y-4">
@@ -121,7 +127,7 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
             </div>
             
             {(status === 'IDLE' || status === 'INCORRECT') && (
-              <div className="flex gap-3 w-full max-w-xs">
+              <div className="flex gap-3 w-full max-w-sm justify-center">
                 <button
                   type="submit"
                   className="flex-1 bg-vedic-deep text-white px-4 py-3 rounded-lg font-semibold hover:bg-opacity-90 transition-all shadow-lg hover:shadow-xl"
@@ -130,8 +136,18 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
                 </button>
                 <button
                   type="button"
+                  onClick={handleReset}
+                  className="px-4 py-3 text-gray-600 bg-white border border-gray-200 hover:bg-gray-50 rounded-lg font-medium transition-all"
+                  title="Reset Answer"
+                >
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="w-6 h-6">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M16.023 9.348h4.992v-.001M2.985 19.644v-4.992m0 0h4.992m-4.993 0 3.181 3.183a8.25 8.25 0 0 0 13.803-3.7M4.031 9.865a8.25 8.25 0 0 1 13.803-3.7l3.181 3.182m0-4.991v4.99" />
+                  </svg>
+                </button>
+                <button
+                  type="button"
                   onClick={handleGiveUp}
-                  className="px-4 py-3 text-vedic-deep bg-white border border-gray-200 hover:bg-gray-50 rounded-lg font-medium transition-all"
+                  className="px-4 py-3 text-vedic-deep bg-white border border-gray-200 hover:bg-gray-50 rounded-lg font-medium transition-all whitespace-nowrap"
                 >
                   Show Me
                 </button>
