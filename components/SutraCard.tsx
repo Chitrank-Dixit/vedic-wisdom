@@ -30,27 +30,35 @@ const SutraCard: React.FC<SutraCardProps> = ({ sutra, onClick }) => {
     }
   };
 
+  const handleStart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    onClick(sutra);
+  };
+
   return (
     <div
-      className={`group relative flex flex-col text-left transition-all duration-300 transform bg-white rounded-xl border border-stone-200 overflow-hidden w-full ${isExpanded ? 'shadow-2xl ring-1 ring-vedic-gold/50 z-10' : 'hover:-translate-y-1 hover:shadow-2xl'}`}
+      className={`group relative flex flex-col text-left transition-all duration-300 transform bg-white rounded-xl border border-stone-200 overflow-hidden w-full ${isExpanded ? 'shadow-2xl ring-1 ring-vedic-gold/50 z-10 scale-[1.02]' : 'hover:scale-[1.02] hover:shadow-[0_10px_40px_-10px_rgba(212,175,55,0.5)] hover:border-vedic-gold/50'}`}
+      onClick={handleExpand}
     >
       <div className={`absolute top-0 left-0 w-2 h-full ${sutra.colorClass} transition-all duration-300 ${isExpanded ? 'w-full opacity-5' : 'group-hover:w-full group-hover:opacity-10'}`} />
       
-      {/* Main Clickable Area for Selection */}
-      <div 
-        className="relative z-10 w-full p-6 pb-2 cursor-pointer"
-        onClick={() => onClick(sutra)}
-      >
+      {/* Main Content Area */}
+      <div className="relative z-10 w-full p-6 pb-2 cursor-pointer">
         <div className="flex justify-between items-start mb-2">
           <span className={`text-xs font-bold px-2 py-1 rounded-full text-white ${sutra.colorClass}`}>
             {sutra.difficulty}
           </span>
-          {/* Main Action Icon */}
-          <div className="bg-stone-100 p-1.5 rounded-full text-gray-400 group-hover:text-vedic-deep group-hover:bg-vedic-gold/20 transition-colors">
+          
+          {/* Start Action Button */}
+          <button 
+            onClick={handleStart}
+            className="bg-stone-100 hover:bg-vedic-teal hover:text-white p-2 rounded-full text-gray-400 transition-all shadow-sm group-hover:scale-110 z-20"
+            title="Start Practice"
+          >
              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-5 h-5">
               <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 5.653c0-.856.917-1.398 1.667-.986l11.54 6.347a1.125 1.125 0 0 1 0 1.972l-11.54 6.347a1.125 1.125 0 0 1-1.667-.986V5.653Z" />
             </svg>
-          </div>
+          </button>
         </div>
 
         <h3 className="font-serif text-xl font-bold text-gray-900 mb-1 group-hover:text-vedic-deep">
@@ -66,9 +74,8 @@ const SutraCard: React.FC<SutraCardProps> = ({ sutra, onClick }) => {
 
       {/* Expand/Collapse Toggle Section */}
       <div className="relative z-20 px-6 pb-4 pt-0">
-        <button
-          onClick={handleExpand}
-          className="flex items-center gap-1 text-xs font-bold text-gray-400 hover:text-vedic-teal transition-colors uppercase tracking-wider"
+        <div
+          className="flex items-center gap-1 text-xs font-bold text-gray-400 group-hover:text-vedic-teal transition-colors uppercase tracking-wider cursor-pointer"
         >
           {isExpanded ? (
             <>
@@ -81,11 +88,11 @@ const SutraCard: React.FC<SutraCardProps> = ({ sutra, onClick }) => {
              <>
               <span>More Info</span>
               <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-3 h-3">
-                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                <path strokeLinecap="round" strokeLinejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5-7.5" />
               </svg>
              </>
           )}
-        </button>
+        </div>
 
         {/* Expanded Content */}
         <div 
@@ -99,7 +106,7 @@ const SutraCard: React.FC<SutraCardProps> = ({ sutra, onClick }) => {
                 <div className="h-2 bg-stone-200 rounded w-5/6"></div>
               </div>
             ) : details ? (
-              <div className="space-y-4 pb-2 border-t border-stone-100 pt-4">
+              <div className="space-y-4 pb-2 border-t border-stone-100 pt-4" onClick={(e) => e.stopPropagation()}>
                 <div>
                    <h4 className="text-xs font-bold text-vedic-deep uppercase mb-1">Summary</h4>
                    <p className="text-sm text-gray-700 leading-relaxed">{details.summary}</p>
@@ -120,6 +127,16 @@ const SutraCard: React.FC<SutraCardProps> = ({ sutra, onClick }) => {
                     {details.mathDeepDive}
                   </p>
                 </div>
+
+                <button 
+                   onClick={handleStart}
+                   className="w-full mt-2 bg-vedic-deep text-vedic-gold py-2.5 rounded-lg font-bold text-sm hover:bg-opacity-90 transition flex items-center justify-center gap-2"
+                 >
+                   <span>Start Now</span>
+                   <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor" className="w-4 h-4">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5 21 12m0 0-7.5 7.5M21 12H3" />
+                  </svg>
+                 </button>
               </div>
             ) : null}
           </div>

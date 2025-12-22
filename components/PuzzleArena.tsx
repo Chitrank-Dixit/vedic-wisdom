@@ -45,8 +45,7 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
       onSolve();
     } else {
       setStatus('INCORRECT');
-      setShake(true);
-      setTimeout(() => setShake(false), 300);
+      onFail();
     }
   };
 
@@ -121,12 +120,12 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
                     status === 'INCORRECT' ? 'border-red-500 bg-red-50 text-red-900' : 
                     status === 'REVEALED' ? 'border-amber-500 bg-amber-50 text-amber-900' :
                     'border-gray-300 focus:border-vedic-gold'}`}
-                disabled={status === 'CORRECT' || status === 'REVEALED'}
+                disabled={status !== 'IDLE'}
                 autoFocus
               />
             </div>
             
-            {(status === 'IDLE' || status === 'INCORRECT') && (
+            {status === 'IDLE' && (
               <div className="flex gap-3 w-full max-w-sm justify-center">
                 <button
                   type="submit"
@@ -156,7 +155,7 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
           </form>
 
            {/* Hint Toggle */}
-           {(status === 'IDLE' || status === 'INCORRECT') && (
+           {status === 'IDLE' && (
             <button 
               onClick={() => setShowHint(!showHint)}
               className="mt-6 text-sm text-gray-500 hover:text-vedic-teal flex items-center justify-center gap-2 mx-auto"
@@ -168,27 +167,32 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
             </button>
            )}
 
-           {showHint && (status === 'IDLE' || status === 'INCORRECT') && (
+           {showHint && status === 'IDLE' && (
              <div className="mt-4 p-4 bg-yellow-50 text-yellow-800 rounded-lg text-sm border border-yellow-200 animate-fade-in text-left">
                <span className="font-bold">Hint:</span> {puzzle.hint}
              </div>
            )}
         </div>
 
-        {/* Feedback Section */}
-        {status === 'INCORRECT' && (
-           <div className="bg-red-50 p-4 text-center border-t border-red-100 animate-fade-in">
-             <p className="text-red-700 font-medium">Not quite. Try applying the sutra steps again!</p>
-           </div>
-        )}
-
-        {(status === 'CORRECT' || status === 'REVEALED') && (
-          <div className={`p-8 border-t animate-slide-up ${status === 'CORRECT' ? 'bg-emerald-50 border-emerald-100' : 'bg-amber-50 border-amber-100'}`}>
+        {/* Result & Solution Section */}
+        {(status === 'CORRECT' || status === 'REVEALED' || status === 'INCORRECT') && (
+          <div className={`p-8 border-t animate-slide-up 
+            ${status === 'CORRECT' ? 'bg-emerald-50 border-emerald-100' : 
+              status === 'INCORRECT' ? 'bg-red-50 border-red-100' : 
+              'bg-amber-50 border-amber-100'}`}>
+            
             <div className="flex items-center justify-center gap-3 mb-6">
-              <div className={`p-2 rounded-full ${status === 'CORRECT' ? 'bg-emerald-100 text-emerald-600' : 'bg-amber-100 text-amber-600'}`}>
+              <div className={`p-2 rounded-full 
+                ${status === 'CORRECT' ? 'bg-emerald-100 text-emerald-600' : 
+                  status === 'INCORRECT' ? 'bg-red-100 text-red-600' : 
+                  'bg-amber-100 text-amber-600'}`}>
                 {status === 'CORRECT' ? (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
                     <path fillRule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12Zm13.36-1.814a.75.75 0 1 0-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 0 0-1.06 1.06l2.25 2.25a.75.75 0 0 0 1.14-.094l3.75-5.25Z" clipRule="evenodd" />
+                  </svg>
+                ) : status === 'INCORRECT' ? (
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
+                    <path fillRule="evenodd" d="M12 2.25c-5.385 0-9.75 4.365-9.75 9.75s4.365 9.75 9.75 9.75 9.75-4.365 9.75-9.75S17.385 2.25 12 2.25Zm-1.72 6.97a.75.75 0 1 0-1.06 1.06L10.94 12l-1.72 1.72a.75.75 0 1 0 1.06 1.06L12 13.06l1.72 1.72a.75.75 0 1 0 1.06-1.06L13.06 12l1.72-1.72a.75.75 0 1 0-1.06-1.06L12 10.94l-1.72-1.72Z" clipRule="evenodd" />
                   </svg>
                 ) : (
                   <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-6 h-6">
@@ -196,12 +200,23 @@ const PuzzleArena: React.FC<PuzzleArenaProps> = ({ sutra, onBack, onSolve, onFai
                   </svg>
                 )}
               </div>
-              <h3 className={`text-2xl font-serif font-bold ${status === 'CORRECT' ? 'text-emerald-800' : 'text-amber-800'}`}>
-                {status === 'CORRECT' ? 'Excellent!' : 'Learning Opportunity'}
+              <h3 className={`text-2xl font-serif font-bold 
+                ${status === 'CORRECT' ? 'text-emerald-800' : 
+                  status === 'INCORRECT' ? 'text-red-800' : 
+                  'text-amber-800'}`}>
+                {status === 'CORRECT' ? 'Excellent!' : 
+                 status === 'INCORRECT' ? 'Incorrect' : 'Learning Opportunity'}
               </h3>
             </div>
 
             <div className="max-w-xl mx-auto">
+              {(status === 'INCORRECT' || status === 'REVEALED') && (
+                 <div className="mb-6 text-center animate-fade-in">
+                   <span className="text-xs uppercase font-bold tracking-wider text-gray-500 mb-1 block">Correct Answer</span>
+                   <p className="text-4xl font-bold text-gray-900">{puzzle.answer}</p>
+                 </div>
+              )}
+            
               <h4 className="text-lg font-bold text-gray-800 mb-4 text-center">The Vedic Method:</h4>
               <p className="text-gray-600 text-center mb-6 italic">{puzzle.explanation}</p>
               
